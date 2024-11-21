@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confession to Father</title>
+    <style>
+        /* Body styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #6A4C9C, #4F92B8); /* Muted blues and purples */
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            background-size: cover;
+        }
+
+        /* Main message styling */
+        .message {
+            font-size: 30px;
+            font-weight: 600;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Subtle shadow for emphasis */
+            margin-bottom: 30px;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+            font-family: 'Caveat', sans-serif; /* More handwritten style font */
+            color: #fff;
+        }
+
+        /* Button container for proper alignment */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Space between buttons */
+            margin-top: 30px; /* Space from the message */
+        }
+
+        /* Button styling */
+        .btn {
+            padding: 20px 40px;
+            font-size: 22px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            font-family: 'Caveat', sans-serif; /* Handwritten style */
+        }
+
+        /* Yes button */
+        .yes-btn {
+            background-color: #FF8A80; /* Soft pink to feel warmer */
+            color: white;
+        }
+
+        .yes-btn:hover {
+            background-color: #FF5252;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        /* No button */
+        .no-btn {
+            background-color: #FF6F61; /* Muted red */
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .no-btn:hover {
+            background-color: #E53935;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 18px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Big message styling */
+        #bigMessage {
+            font-size: 48px;
+            font-weight: 700;
+            color: #333;
+            display: none;
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            padding: 10px 20px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Falling emoji animation */
+        .emoji {
+            position: absolute;
+            font-size: 40px;
+            animation: fall 4s infinite ease-in-out;
+            opacity: 0;
+        }
+
+        @keyframes fall {
+            0% { top: -30px; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .message {
+                font-size: 24px;
+                margin-bottom: 30px;
+            }
+
+            .btn {
+                font-size: 20px;
+                padding: 16px 32px;
+            }
+
+            #bigMessage {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="message" id="message">
+        Hi Dad, can you send me some money? I'm miskin already 😔
+    </div>
+    
+    <!-- Button container for proper alignment (side by side) -->
+    <div class="btn-container">
+        <button class="btn yes-btn" id="yes-btn" onclick="respond('Yes')">Yes</button>
+        <button class="btn no-btn" id="no-btn" onmouseover="moveAway()">No</button>
+    </div>
+
+    <div id="bigMessage">Thank you dad, you're the best dad in the world! I love you so much! ❤️</div>
+
+    <script>
+        function respond(answer) {
+            if (answer === 'Yes') {
+                document.getElementById('message').style.display = 'none';  // Hide the initial message
+                document.getElementById('bigMessage').style.display = 'block';  // Show the big message
+                document.getElementById('yes-btn').style.display = 'none';  // Hide the "Yes" button
+                document.getElementById('no-btn').style.display = 'none';  // Hide the "No" button
+                createLoveRain();  // Call function to create love emoji rain
+            }
+        }
+
+        function createLoveRain() {
+            const emojis = ['💵', '💲', '💰', '🤑'];  // Array of emojis
+            const numberOfEmojis = 50;  // Fewer emojis for a softer, more melancholic effect
+            for (let i = 0; i < numberOfEmojis; i++) {
+                const emoji = document.createElement('div');
+                emoji.classList.add('emoji');
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];  // Randomly select an emoji
+                emoji.style.left = Math.random() * 100 + 'vw';  // Random horizontal position
+                emoji.style.animationDuration = (Math.random() * 4 + 5) + 's';  // Random falling speed
+                document.body.appendChild(emoji);
+
+                // Remove emoji after it falls off screen
+                setTimeout(() => {
+                    emoji.remove();
+                }, 4000);
+            }
+        }
+
+        function moveAway() {
+            const button = document.getElementById('no-btn');
+            const buttonWidth = button.offsetWidth;
+            const buttonHeight = button.offsetHeight;
+            const maxX = window.innerWidth - buttonWidth;
+            const maxY = window.innerHeight - buttonHeight;
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            button.style.position = "absolute";  // Make sure the button moves freely
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+        }
+    </script>
+</body>
+</html>
